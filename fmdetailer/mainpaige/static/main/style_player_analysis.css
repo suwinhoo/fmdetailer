@@ -120,7 +120,7 @@ nav a:hover::after {
   background-color: #fff;
   padding: 30px;
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 40px #00000014;
   transition: transform 0.3s, box-shadow 0.3s;
   border: 2px solid transparent;
 }
