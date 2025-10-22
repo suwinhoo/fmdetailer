@@ -1,0 +1,532 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FM24 - Dodaj zawodnika</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'main/style_player_analysis.css' %}"
+    />
+  </head>
+  <body>
+    <nav>
+      <a href="#">Main page</a>
+      <a href="#">First feature</a>
+      <a href="#">Second feature</a>
+      <a href="#">Third feature</a>
+      <a href="#">Fourth feature</a>
+      <a href="#">Fifth feature</a>
+    </nav>
+
+    <div class="container">
+      <div class="card">
+        <h1>Dodaj nowego zawodnika</h1>
+        <form method="post" action="">
+          {% csrf_token %}
+          <!-- Podstawowe -->
+          <fieldset>
+            <legend>Dane podstawowe</legend>
+            <div class="grid">
+              <div>
+                <label for="id_name">Imię i nazwisko</label>
+                <input
+                  id="id_name"
+                  name="name"
+                  type="text"
+                  required
+                  maxlength="100"
+                />
+              </div>
+
+              <div>
+                <label for="id_position">Pozycja</label>
+                <input
+                  id="id_position"
+                  name="position"
+                  type="text"
+                  maxlength="50"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Techniczne -->
+          <fieldset>
+            <legend>Atrybuty techniczne</legend>
+            <div class="grid">
+              <div>
+                <label for="id_corners">Corners</label>
+                <input
+                  id="id_corners"
+                  name="corners"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_crossing">Crossing</label>
+                <input
+                  id="id_crossing"
+                  name="crossing"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_dribbling">Dribbling</label>
+                <input
+                  id="id_dribbling"
+                  name="dribbling"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_finishing">Finishing</label>
+                <input
+                  id="id_finishing"
+                  name="finishing"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_first_touch">First touch</label>
+                <input
+                  id="id_first_touch"
+                  name="first_touch"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_free_kicks">Free kicks</label>
+                <input
+                  id="id_free_kicks"
+                  name="free_kicks"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_heading">Heading</label>
+                <input
+                  id="id_heading"
+                  name="heading"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_long_shots">Long shots</label>
+                <input
+                  id="id_long_shots"
+                  name="long_shots"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_long_throws">Long throws</label>
+                <input
+                  id="id_long_throws"
+                  name="long_throws"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_marking">Marking</label>
+                <input
+                  id="id_marking"
+                  name="marking"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_passing">Passing</label>
+                <input
+                  id="id_passing"
+                  name="passing"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_penalty_taking">Penalty taking</label>
+                <input
+                  id="id_penalty_taking"
+                  name="penalty_taking"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_tackling">Tackling</label>
+                <input
+                  id="id_tackling"
+                  name="tackling"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_technique">Technique</label>
+                <input
+                  id="id_technique"
+                  name="technique"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Mentalne -->
+          <fieldset>
+            <legend>Atrybuty mentalne</legend>
+            <div class="grid">
+              <div>
+                <label for="id_aggression">Aggression</label>
+                <input
+                  id="id_aggression"
+                  name="aggression"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_anticipation">Anticipation</label>
+                <input
+                  id="id_anticipation"
+                  name="anticipation"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_bravery">Bravery</label>
+                <input
+                  id="id_bravery"
+                  name="bravery"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_composure">Composure</label>
+                <input
+                  id="id_composure"
+                  name="composure"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_concentration">Concentration</label>
+                <input
+                  id="id_concentration"
+                  name="concentration"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_decisions">Decisions</label>
+                <input
+                  id="id_decisions"
+                  name="decisions"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_determination">Determination</label>
+                <input
+                  id="id_determination"
+                  name="determination"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_flair">Flair</label>
+                <input
+                  id="id_flair"
+                  name="flair"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_leadership">Leadership</label>
+                <input
+                  id="id_leadership"
+                  name="leadership"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_off_the_ball">Off the ball</label>
+                <input
+                  id="id_off_the_ball"
+                  name="off_the_ball"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_positioning">Positioning</label>
+                <input
+                  id="id_positioning"
+                  name="positioning"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_teamwork">Teamwork</label>
+                <input
+                  id="id_teamwork"
+                  name="teamwork"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_vision">Vision</label>
+                <input
+                  id="id_vision"
+                  name="vision"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_work_rate">Work rate</label>
+                <input
+                  id="id_work_rate"
+                  name="work_rate"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Fizyczne -->
+          <fieldset>
+            <legend>Atrybuty fizyczne</legend>
+            <div class="grid">
+              <div>
+                <label for="id_acceleration">Acceleration</label>
+                <input
+                  id="id_acceleration"
+                  name="acceleration"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_pace">Pace</label>
+                <input
+                  id="id_pace"
+                  name="pace"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_agility">Agility</label>
+                <input
+                  id="id_agility"
+                  name="agility"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_balance">Balance</label>
+                <input
+                  id="id_balance"
+                  name="balance"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_jump">Jumping reach</label>
+                <input
+                  id="id_jump"
+                  name="jump"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_stamina">Stamina</label>
+                <input
+                  id="id_stamina"
+                  name="stamina"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_strength">Strength</label>
+                <input
+                  id="id_strength"
+                  name="strength"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_natural_fitness">Natural fitness</label>
+                <input
+                  id="id_natural_fitness"
+                  name="natural_fitness"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Bramkarz (opcjonalne) -->
+          <fieldset>
+            <legend>Bramkarz (opcjonalne)</legend>
+            <div class="grid">
+              <div>
+                <label for="id_gk_diving">GK: Diving</label>
+                <input
+                  id="id_gk_diving"
+                  name="gk_diving"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_gk_handling">GK: Handling</label>
+                <input
+                  id="id_gk_handling"
+                  name="gk_handling"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_gk_kicking">GK: Kicking</label>
+                <input
+                  id="id_gk_kicking"
+                  name="gk_kicking"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_gk_reflexes">GK: Reflexes</label>
+                <input
+                  id="id_gk_reflexes"
+                  name="gk_reflexes"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div>
+                <label for="id_gk_positioning">GK: Positioning</label>
+                <input
+                  id="id_gk_positioning"
+                  name="gk_positioning"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Notatka / dodatkowe -->
+          <fieldset>
+            <legend>Dodatkowe</legend>
+            <div class="grid">
+              <div style="grid-column: 1 / -1">
+                <label for="id_notes">Notatki / komentarz</label>
+                <input id="id_notes" name="notes" type="text" />
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="actions">
+            <button type="submit">Zapisz zawodnika</button>
+            <button type="reset" class="secondary">Wyczyść</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Sekcja dolna: import i data_addition obok siebie -->
+      <div class="bottom_section">
+        <div class="file_import">
+          <h2>Lub importuj zawodnika</h2>
+          <form
+            method="post"
+            action="/import_players/"
+            enctype="multipart/form-data"
+          >
+            <input
+              type="file"
+              name="player_file"
+              accept=".csv, .json"
+              required
+            />
+            <button type="submit">Importuj plik</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
