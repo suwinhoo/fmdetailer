@@ -23,7 +23,7 @@
     <div class="container">
       <div class="card">
         <h1>Dodaj nowego zawodnika</h1>
-        <form method="post" action="">
+        <form method="post" action="{% url 'add_player' %}">
           {% csrf_token %}
           <!-- Podstawowe -->
           <fieldset>
@@ -39,15 +39,62 @@
                   maxlength="100"
                 />
               </div>
-
               <div>
-                <label for="id_position">Pozycja</label>
-                <input
-                  id="id_position"
-                  name="position"
-                  type="text"
-                  maxlength="50"
-                />
+                <label for="id_position">Position</label>
+                <select id="id_position" name="position" required>
+                  <option value="" disabled selected>Select a position</option>
+
+                  <!-- Forwards -->
+                  <optgroup
+                    label="Forward"
+                    title="Striker, Centre Forward, Second Striker, Wingers, Advanced Forward positions"
+                  >
+                    <option value="ST">ST – Striker</option>
+                    <option value="CF">CF – Centre Forward</option>
+                    <option value="SS">SS – Second Striker</option>
+                    <option value="LW">LW – Left Winger</option>
+                    <option value="RW">RW – Right Winger</option>
+                    <option value="IF">IF – Inside Forward</option>
+                    <option value="WF">WF – Wide Forward</option>
+                    <option value="AF">AF – Advanced Forward</option>
+                  </optgroup>
+
+                  <!-- Midfielders -->
+                  <optgroup
+                    label="Midfielder"
+                    title="Central, Defensive, Attacking, Box-to-box, Playmaker roles"
+                  >
+                    <option value="CM">CM – Central Midfielder</option>
+                    <option value="DM">DM – Defensive Midfielder</option>
+                    <option value="AM">AM – Attacking Midfielder</option>
+                    <option value="B2B">B2B – Box-to-box Midfielder</option>
+                    <option value="AP">AP – Advanced Playmaker</option>
+                    <option value="DLP">DLP – Deep-lying Playmaker</option>
+                    <option value="MEZ">MEZ – Mezzala</option>
+                    <option value="ENG">ENG – Enganche</option>
+                    <option value="WCM">WCM – Wide Central Midfielder</option>
+                    <option value="IFM">IFM – Inside Forward Midfielder</option>
+                  </optgroup>
+
+                  <!-- Defenders -->
+                  <optgroup
+                    label="Defender"
+                    title="Centre Back, Full-back, Wing-back, Sweeper positions"
+                  >
+                    <option value="CB">CB – Centre Back</option>
+                    <option value="SW">SW – Sweeper</option>
+                    <option value="LB">LB – Left Back</option>
+                    <option value="RB">RB – Right Back</option>
+                    <option value="LWB">LWB – Left Wing-back</option>
+                    <option value="RWB">RWB – Right Wing-back</option>
+                  </optgroup>
+
+                  <!-- Goalkeeper -->
+                  <optgroup label="Goalkeeper" title="GK – Goalkeeper">
+                    <option value="GK">GK – Goalkeeper</option>
+                    <option value="SWG">SWG – Sweeper Keeper</option>
+                  </optgroup>
+                </select>
               </div>
             </div>
           </fieldset>
@@ -505,9 +552,11 @@
           <h2>Lub importuj zawodnika</h2>
           <form
             method="post"
-            action="/import_players/"
+            action="{% url 'import_player' %}"
             enctype="multipart/form-data"
           >
+            {% csrf_token %}
+            <!-- POPRAWIONE -->
             <input
               type="file"
               name="player_file"

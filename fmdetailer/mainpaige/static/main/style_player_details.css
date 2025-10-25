@@ -1,0 +1,187 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f7f7fc;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+nav {
+  width: 100%;
+  background-color: #8c6eff;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  position: relative;
+  transition: color 0.3s;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background-color: #ffedff;
+  transition: width 0.3s ease;
+}
+
+nav a:hover {
+  color: #ffedff;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+.player-name {
+  font-size: 2.5rem;
+  color: #6c33ff;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.5px;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sekcja analizy */
+.roles-analysis {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  width: 90%;
+  max-width: 900px;
+  animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.roles-analysis h2 {
+  color: #6c33ff;
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  font-weight: 700;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 14px 16px;
+}
+
+thead {
+  background-color: rgba(108, 51, 255, 0.08);
+}
+
+th {
+  color: #6c33ff;
+  font-weight: 700;
+  border-bottom: 3px solid rgba(108, 51, 255, 0.3);
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(108, 51, 255, 0.03);
+}
+
+tbody tr:nth-child(1) {
+  color: #5da561;
+}
+
+tbody tr:hover {
+  background-color: rgba(108, 51, 255, 0.08);
+  transform: scale(1.01);
+  transition: all 0.2s;
+}
+
+.score-bar {
+  background-color: #eae6ff;
+  border-radius: 10px;
+  height: 25px;
+  overflow: hidden;
+  width: 100%;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.score-fill {
+  background: linear-gradient(90deg, #ca462e, #07da11);
+  height: 100%;
+  text-align: right;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding-right: 10px;
+  border-radius: 10px;
+  transition: width 0.6s ease-in-out;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+  .roles-analysis {
+    padding: 25px;
+  }
+
+  .player-name {
+    font-size: 2rem;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .score-fill {
+    font-size: 0.8rem;
+  }
+}

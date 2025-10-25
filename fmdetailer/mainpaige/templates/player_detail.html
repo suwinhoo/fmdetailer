@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analiza zawodnika - {{ player.name }}</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'main/style_player_details.css' %}"
+    />
+  </head>
+  <body>
+    <nav>
+      <a href="/">Main page</a>
+      <a href="/player_analysis">All players</a>
+    </nav>
+
+    <h1 class="player-name">Analiza zawodnika: {{ player.name }}</h1>
+
+    <div class="roles-analysis">
+      <h2>Dopasowanie do pozycji</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Pozycja</th>
+            <th>Dopasowanie (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for role, score in sorted_scores %}
+          <tr>
+            <td>{{ role }}</td>
+            <td>
+              <div class="score-bar">
+                <div class="score-fill" style="width: {{ score }}%">
+                  {{ score|floatformat:1 }}%
+                </div>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
