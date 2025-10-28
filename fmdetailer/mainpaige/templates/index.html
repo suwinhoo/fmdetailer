@@ -10,8 +10,8 @@
   <body>
     <nav>
       <a href="">Main paige</a>
-      <a href="/player_analysis">First feature</a>
-      <a href="#">Second feature</a>
+      <a href="/player_analysis">Player analysis</a>
+      <a href="/similar_players">Similar players</a>
       <a href="#">Third feature</a>
       <a href="#">Fourth feature</a>
       <a href="#">Fifth feature</a>
@@ -19,9 +19,19 @@
     <div class="name">FMDETAILER</div>
     <div class="container">
       <a href="/player_analysis">
-        <div class="first"></div>
+        <div class="first">
+          <img
+            src="{% static 'main/player_analysis.png' %}"
+            alt=""
+            class="image"
+          />
+          <div class="text">
+            Have no clue on which position player will present the best? Let's
+            have a look onto this
+          </div>
+        </div>
       </a>
-      <a href="#">
+      <a href="/similar_players">
         <div class="second"></div>
       </a>
       <a href="#">

@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'main/style_main.css' %}" />
+  </head>
+  <body>
+    <nav>
+      <a href="">Main paige</a>
+      <a href="/player_analysis">Player analysis</a>
+      <a href="/similar_players">Similar players</a>
+      <a href="#">Third feature</a>
+      <a href="#">Fourth feature</a>
+      <a href="#">Fifth feature</a>
+    </nav>
+    <div class="file-import-card">
+      <h2>Importuj zawodnika porównywanego</h2>
+      <form
+        method="post"
+        action="{% url 'import_player' %}"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <label for="id_player_file" class="file-label">Wybierz plik .csv</label>
+        <input
+          id="id_player_file"
+          type="file"
+          name="player_file"
+          accept=".csv"
+          required
+        />
+      </form>
+      <h2>Dodaj piłkarzy, których chcesz porównać</h2>
+      <form
+        method="post"
+        action="{% url 'import_player' %}"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <label for="id_player_file" class="file-label">Wybierz plik .csv</label>
+        <input
+          id="id_player_file"
+          type="file"
+          name="player_file"
+          accept=".csv"
+          required
+        />
+        <button type="submit" id="button-submit">Importuj pliki</button>
+      </form>
+    </div>
+  </body>
+</html>

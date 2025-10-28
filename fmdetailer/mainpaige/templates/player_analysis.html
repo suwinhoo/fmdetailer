@@ -9,27 +9,33 @@
       rel="stylesheet"
       href="{% static 'main/style_player_analysis.css' %}"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <nav>
-      <a href="/">Main page</a>
-      <a href="/player_analysis">First feature</a>
-      <a href="#">Second feature</a>
+      <a href="">Main paige</a>
+      <a href="/player_analysis">Player analysis</a>
+      <a href="/similar_players">Similar players</a>
       <a href="#">Third feature</a>
       <a href="#">Fourth feature</a>
       <a href="#">Fifth feature</a>
     </nav>
 
     <div class="container">
-      <div class="card">
+      <main class="form-card">
         <h1>Dodaj nowego zawodnika</h1>
         <form method="post" action="{% url 'add_player' %}">
           {% csrf_token %}
-          <!-- Podstawowe -->
+
           <fieldset>
             <legend>Dane podstawowe</legend>
-            <div class="grid">
-              <div>
+            <div class="form-grid basic-grid">
+              <div class="form-group">
                 <label for="id_name">Imię i nazwisko</label>
                 <input
                   id="id_name"
@@ -39,16 +45,11 @@
                   maxlength="100"
                 />
               </div>
-              <div>
-                <label for="id_position">Position</label>
+              <div class="form-group">
+                <label for="id_position">Pozycja</label>
                 <select id="id_position" name="position" required>
-                  <option value="" disabled selected>Select a position</option>
-
-                  <!-- Forwards -->
-                  <optgroup
-                    label="Forward"
-                    title="Striker, Centre Forward, Second Striker, Wingers, Advanced Forward positions"
-                  >
+                  <option value="" disabled selected>Wybierz pozycję</option>
+                  <optgroup label="Napastnicy">
                     <option value="ST">ST – Striker</option>
                     <option value="CF">CF – Centre Forward</option>
                     <option value="SS">SS – Second Striker</option>
@@ -58,12 +59,7 @@
                     <option value="WF">WF – Wide Forward</option>
                     <option value="AF">AF – Advanced Forward</option>
                   </optgroup>
-
-                  <!-- Midfielders -->
-                  <optgroup
-                    label="Midfielder"
-                    title="Central, Defensive, Attacking, Box-to-box, Playmaker roles"
-                  >
+                  <optgroup label="Pomocnicy">
                     <option value="CM">CM – Central Midfielder</option>
                     <option value="DM">DM – Defensive Midfielder</option>
                     <option value="AM">AM – Attacking Midfielder</option>
@@ -72,15 +68,8 @@
                     <option value="DLP">DLP – Deep-lying Playmaker</option>
                     <option value="MEZ">MEZ – Mezzala</option>
                     <option value="ENG">ENG – Enganche</option>
-                    <option value="WCM">WCM – Wide Central Midfielder</option>
-                    <option value="IFM">IFM – Inside Forward Midfielder</option>
                   </optgroup>
-
-                  <!-- Defenders -->
-                  <optgroup
-                    label="Defender"
-                    title="Centre Back, Full-back, Wing-back, Sweeper positions"
-                  >
+                  <optgroup label="Obrońcy">
                     <option value="CB">CB – Centre Back</option>
                     <option value="SW">SW – Sweeper</option>
                     <option value="LB">LB – Left Back</option>
@@ -88,9 +77,7 @@
                     <option value="LWB">LWB – Left Wing-back</option>
                     <option value="RWB">RWB – Right Wing-back</option>
                   </optgroup>
-
-                  <!-- Goalkeeper -->
-                  <optgroup label="Goalkeeper" title="GK – Goalkeeper">
+                  <optgroup label="Bramkarze">
                     <option value="GK">GK – Goalkeeper</option>
                     <option value="SWG">SWG – Sweeper Keeper</option>
                   </optgroup>
@@ -98,12 +85,10 @@
               </div>
             </div>
           </fieldset>
-
-          <!-- Techniczne -->
           <fieldset>
             <legend>Atrybuty techniczne</legend>
-            <div class="grid">
-              <div>
+            <div class="form-grid attributes-grid">
+              <div class="form-group">
                 <label for="id_corners">Corners</label>
                 <input
                   id="id_corners"
@@ -113,7 +98,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_crossing">Crossing</label>
                 <input
                   id="id_crossing"
@@ -123,7 +108,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_dribbling">Dribbling</label>
                 <input
                   id="id_dribbling"
@@ -133,7 +118,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_finishing">Finishing</label>
                 <input
                   id="id_finishing"
@@ -143,8 +128,8 @@
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_first_touch">First touch</label>
+              <div class="form-group">
+                <label for="id_first_touch">First Touch</label>
                 <input
                   id="id_first_touch"
                   name="first_touch"
@@ -153,8 +138,8 @@
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_free_kicks">Free kicks</label>
+              <div class="form-group">
+                <label for="id_free_kicks">Free Kicks</label>
                 <input
                   id="id_free_kicks"
                   name="free_kicks"
@@ -163,7 +148,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_heading">Heading</label>
                 <input
                   id="id_heading"
@@ -173,8 +158,8 @@
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_long_shots">Long shots</label>
+              <div class="form-group">
+                <label for="id_long_shots">Long Shots</label>
                 <input
                   id="id_long_shots"
                   name="long_shots"
@@ -183,8 +168,8 @@
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_long_throws">Long throws</label>
+              <div class="form-group">
+                <label for="id_long_throws">Long Throws</label>
                 <input
                   id="id_long_throws"
                   name="long_throws"
@@ -193,7 +178,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_marking">Marking</label>
                 <input
                   id="id_marking"
@@ -203,7 +188,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_passing">Passing</label>
                 <input
                   id="id_passing"
@@ -213,8 +198,8 @@
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_penalty_taking">Penalty taking</label>
+              <div class="form-group">
+                <label for="id_penalty_taking">Penalty Taking</label>
                 <input
                   id="id_penalty_taking"
                   name="penalty_taking"
@@ -223,7 +208,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_tackling">Tackling</label>
                 <input
                   id="id_tackling"
@@ -233,7 +218,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_technique">Technique</label>
                 <input
                   id="id_technique"
@@ -246,11 +231,10 @@
             </div>
           </fieldset>
 
-          <!-- Mentalne -->
           <fieldset>
             <legend>Atrybuty mentalne</legend>
-            <div class="grid">
-              <div>
+            <div class="form-grid attributes-grid">
+              <div class="form-group">
                 <label for="id_aggression">Aggression</label>
                 <input
                   id="id_aggression"
@@ -260,7 +244,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_anticipation">Anticipation</label>
                 <input
                   id="id_anticipation"
@@ -270,7 +254,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_bravery">Bravery</label>
                 <input
                   id="id_bravery"
@@ -280,7 +264,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_composure">Composure</label>
                 <input
                   id="id_composure"
@@ -290,7 +274,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_concentration">Concentration</label>
                 <input
                   id="id_concentration"
@@ -300,7 +284,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_decisions">Decisions</label>
                 <input
                   id="id_decisions"
@@ -310,7 +294,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_determination">Determination</label>
                 <input
                   id="id_determination"
@@ -320,7 +304,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_flair">Flair</label>
                 <input
                   id="id_flair"
@@ -330,7 +314,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_leadership">Leadership</label>
                 <input
                   id="id_leadership"
@@ -340,8 +324,8 @@
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_off_the_ball">Off the ball</label>
+              <div class="form-group">
+                <label for="id_off_the_ball">Off the Ball</label>
                 <input
                   id="id_off_the_ball"
                   name="off_the_ball"
@@ -350,7 +334,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_positioning">Positioning</label>
                 <input
                   id="id_positioning"
@@ -360,7 +344,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_teamwork">Teamwork</label>
                 <input
                   id="id_teamwork"
@@ -370,7 +354,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_vision">Vision</label>
                 <input
                   id="id_vision"
@@ -380,8 +364,8 @@
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_work_rate">Work rate</label>
+              <div class="form-group">
+                <label for="id_work_rate">Work Rate</label>
                 <input
                   id="id_work_rate"
                   name="work_rate"
@@ -393,11 +377,10 @@
             </div>
           </fieldset>
 
-          <!-- Fizyczne -->
           <fieldset>
             <legend>Atrybuty fizyczne</legend>
-            <div class="grid">
-              <div>
+            <div class="form-grid attributes-grid">
+              <div class="form-group">
                 <label for="id_acceleration">Acceleration</label>
                 <input
                   id="id_acceleration"
@@ -407,7 +390,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_pace">Pace</label>
                 <input
                   id="id_pace"
@@ -417,7 +400,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_agility">Agility</label>
                 <input
                   id="id_agility"
@@ -427,7 +410,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_balance">Balance</label>
                 <input
                   id="id_balance"
@@ -437,8 +420,8 @@
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_jump">Jumping reach</label>
+              <div class="form-group">
+                <label for="id_jump">Jumping Reach</label>
                 <input
                   id="id_jump"
                   name="jump"
@@ -447,7 +430,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_stamina">Stamina</label>
                 <input
                   id="id_stamina"
@@ -457,7 +440,7 @@
                   max="20"
                 />
               </div>
-              <div>
+              <div class="form-group">
                 <label for="id_strength">Strength</label>
                 <input
                   id="id_strength"
@@ -467,8 +450,8 @@
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_natural_fitness">Natural fitness</label>
+              <div class="form-group">
+                <label for="id_natural_fitness">Natural Fitness</label>
                 <input
                   id="id_natural_fitness"
                   name="natural_fitness"
@@ -480,55 +463,104 @@
             </div>
           </fieldset>
 
-          <!-- Bramkarz (opcjonalne) -->
           <fieldset>
-            <legend>Bramkarz (opcjonalne)</legend>
-            <div class="grid">
-              <div>
-                <label for="id_gk_diving">GK: Diving</label>
+            <legend>Atrybuty bramkarskie (opcjonalne)</legend>
+            <div class="form-grid attributes-grid">
+              <div class="form-group">
+                <label for="id_aerial_reach">Aerial Reach</label>
                 <input
-                  id="id_gk_diving"
-                  name="gk_diving"
+                  id="id_aerial_reach"
+                  name="aerial_reach"
                   type="number"
                   min="0"
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_gk_handling">GK: Handling</label>
+              <div class="form-group">
+                <label for="id_command_of_area">Command of Area</label>
                 <input
-                  id="id_gk_handling"
-                  name="gk_handling"
+                  id="id_command_of_area"
+                  name="command_of_area"
                   type="number"
                   min="0"
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_gk_kicking">GK: Kicking</label>
+              <div class="form-group">
+                <label for="id_communication">Communication</label>
                 <input
-                  id="id_gk_kicking"
-                  name="gk_kicking"
+                  id="id_communication"
+                  name="communication"
                   type="number"
                   min="0"
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_gk_reflexes">GK: Reflexes</label>
+              <div class="form-group">
+                <label for="id_eccentricity">Eccentricity</label>
                 <input
-                  id="id_gk_reflexes"
-                  name="gk_reflexes"
+                  id="id_eccentricity"
+                  name="eccentricity"
                   type="number"
                   min="0"
                   max="20"
                 />
               </div>
-              <div>
-                <label for="id_gk_positioning">GK: Positioning</label>
+              <div class="form-group">
+                <label for="id_handling">Handling</label>
                 <input
-                  id="id_gk_positioning"
-                  name="gk_positioning"
+                  id="id_handling"
+                  name="handling"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div class="form-group">
+                <label for="id_kicking">Kicking</label>
+                <input
+                  id="id_kicking"
+                  name="kicking"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div class="form-group">
+                <label for="id_one_on_ones">One on Ones</label>
+                <input
+                  id="id_one_on_ones"
+                  name="one_on_ones"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div class="form-group">
+                <label for="id_punching">Punching</label>
+                <input
+                  id="id_punching"
+                  name="punching"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div class="form-group">
+                <label for="id_reflexes">Reflexes</label>
+                <input
+                  id="id_reflexes"
+                  name="reflexes"
+                  type="number"
+                  min="0"
+                  max="20"
+                />
+              </div>
+              <div class="form-group">
+                <label for="id_throwing">Throwing</label>
+                <input
+                  id="id_throwing"
+                  name="throwing"
                   type="number"
                   min="0"
                   max="20"
@@ -537,18 +569,15 @@
             </div>
           </fieldset>
 
-          <!-- Notatka / dodatkowe -->
-
-          <div class="actions">
+          <div class="form-actions">
             <button type="submit">Zapisz zawodnika</button>
             <button type="reset" class="secondary">Wyczyść</button>
           </div>
         </form>
-      </div>
+      </main>
 
-      <!-- Sekcja dolna: import i data_addition obok siebie -->
-      <div class="bottom_section">
-        <div class="file_import">
+      <aside class="sidebar">
+        <div class="file-import-card">
           <h2>Lub importuj zawodnika</h2>
           <form
             method="post"
@@ -556,17 +585,20 @@
             enctype="multipart/form-data"
           >
             {% csrf_token %}
-            <!-- POPRAWIONE -->
+            <label for="id_player_file" class="file-label"
+              >Wybierz plik .csv</label
+            >
             <input
+              id="id_player_file"
               type="file"
               name="player_file"
-              accept=".csv, .json"
+              accept=".csv"
               required
             />
             <button type="submit">Importuj plik</button>
           </form>
         </div>
-      </div>
+      </aside>
     </div>
   </body>
 </html>

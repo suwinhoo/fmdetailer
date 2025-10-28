@@ -78,7 +78,7 @@ nav a:hover::after {
   }
 }
 
-/* Sekcja analizy */
+
 .roles-analysis {
   background-color: #fff;
   padding: 40px;
@@ -165,7 +165,7 @@ tbody tr:hover {
   transition: width 0.6s ease-in-out;
 }
 
-/* Responsywność */
+
 @media (max-width: 768px) {
   .roles-analysis {
     padding: 25px;
