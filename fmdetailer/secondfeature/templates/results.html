@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wyniki Porównania</title>
+
+    <link rel="stylesheet" href="{% static 'main/style_main.css' %}" />
+    <link rel="stylesheet" href="{% static 'main/style_results.css' %}" />
+  </head>
+  <body>
+    <nav>
+      <a href="/">Main paige</a>
+      <a href="/player_analysis">Player analysis</a>
+      <a href="/similar_players">Similar players</a>
+      <a href="#">Third feature</a>
+      <a href="#">Fourth feature</a>
+      <a href="#">Fifth feature</a>
+    </nav>
+
+    <div class="container">
+      <h1>Wyniki Porównania</h1>
+
+      {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <h2>Zawodnicy podobni do: <strong>{{ target_player_name }}</strong></h2>
+      <p>
+        Porównanie na podstawie roli: <strong>{{ target_player_role }}</strong
+        ><br />
+      </p>
+
+      {% if display_rows %}
+      <table>
+        <thead>
+          <tr>
+            {% for header in display_headers %}
+            <th>{{ header }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in display_rows %}
+          <tr>
+            <td>{{ row.name }}</td>
+            <td>{{ row.position }}</td>
+            <td>{{ row.best_role }}</td>
+            <td>{{ row.fit_score }}</td>
+            <td class="highlight {{ row.similarity_class }}">
+              {{ row.similarity }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %} {% if not messages %}
+      <p>Brak wyników do wyświetlenia.</p>
+      {% endif %} {% endif %}
+    </div>
+  </body>
+</html>

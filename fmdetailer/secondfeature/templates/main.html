@@ -4,51 +4,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Analiza Zawodników</title>
     <link rel="stylesheet" href="{% static 'main/style_main.css' %}" />
   </head>
   <body>
     <nav>
-      <a href="">Main paige</a>
+      <a href="/">Main page</a>
       <a href="/player_analysis">Player analysis</a>
       <a href="/similar_players">Similar players</a>
       <a href="#">Third feature</a>
       <a href="#">Fourth feature</a>
-      <a href="#">Fifth feature</a>
     </nav>
+
     <div class="file-import-card">
-      <h2>Importuj zawodnika porównywanego</h2>
       <form
         method="post"
-        action="{% url 'import_player' %}"
+        action="{% url 'run_analysis' %}"
         enctype="multipart/form-data"
       >
         {% csrf_token %}
-        <label for="id_player_file" class="file-label">Wybierz plik .csv</label>
+
+        <h2>Importuj zawodnika porównywanego</h2>
+        <label for="id_main_player" class="file-label">Wybierz plik .csv</label>
         <input
-          id="id_player_file"
+          id="id_main_player"
           type="file"
-          name="player_file"
+          name="main_player_file"
           accept=".csv"
           required
         />
-      </form>
-      <h2>Dodaj piłkarzy, których chcesz porównać</h2>
-      <form
-        method="post"
-        action="{% url 'import_player' %}"
-        enctype="multipart/form-data"
-      >
-        {% csrf_token %}
-        <label for="id_player_file" class="file-label">Wybierz plik .csv</label>
+
+        <h2>Dodaj piłkarzy, których chcesz porównać</h2>
+        <label for="id_player_list" class="file-label">Wybierz plik .csv</label>
         <input
-          id="id_player_file"
+          id="id_player_list"
           type="file"
-          name="player_file"
+          name="player_list_file"
           accept=".csv"
           required
         />
-        <button type="submit" id="button-submit">Importuj pliki</button>
+
+        <button type="submit" class="button-submit">Importuj pliki</button>
       </form>
     </div>
   </body>

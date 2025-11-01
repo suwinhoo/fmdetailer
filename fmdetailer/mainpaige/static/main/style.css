@@ -164,6 +164,32 @@ a div:hover {
   }
 }
 
+/* --- POPRAWKI KARTY .first --- */
+
+/* 1. Zmiana układu karty .first na pionowy */
+.first {
+  flex-direction: column;
+  justify-content: center; /* Wyśrodkowanie zawartości w pionie */
+  padding: 20px; /* Dodanie wewnętrznego odstępu */
+}
+
+/* 2. Styl dla obrazka w karcie */
+.first .image {
+  width: 70px; /* Ustawienie stałej szerokości */
+  height: 70px; /* Ustawienie stałej wysokości */
+  object-fit: contain; /* Zachowanie proporcji obrazka */
+  margin-bottom: 15px; /* Odstęp między obrazkiem a tekstem */
+}
+
+/* 3. Styl dla tekstu w karcie */
+.first .text {
+  font-size: 1rem; /* Zmniejszenie czcionki dla opisu */
+  font-weight: 400; /* Ustawienie normalnej grubości */
+  color: #444; /* Ciemniejszy kolor dla lepszej czytelności */
+  line-height: 1.5; /* Lepszy odstęp między liniami */
+  padding: 0 10px; /* Lekki padding po bokach tekstu */
+}
+
 @media (max-width: 600px) {
   nav {
     flex-wrap: wrap;

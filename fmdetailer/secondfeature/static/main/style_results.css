@@ -1,0 +1,133 @@
+/* STYLE SPECYFICZNE DLA STRONY WYNIKÓW (results.html) */
+
+@keyframes SlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.container {
+  display: block;
+  max-width: 900px;
+  margin: 3rem auto 5rem auto; /* GÓRA/DÓŁ | AUTO | GÓRA/DÓŁ | AUTO */
+  background-color: #fff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  animation: SlideIn 0.6s ease-out forwards;
+}
+
+/* NAGŁÓWKI */
+h1 {
+  color: #6c33ff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  border-bottom: 3px solid #f0f0f0;
+  padding-bottom: 0.5rem;
+}
+h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+p {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  text-align: left;
+}
+
+thead {
+  background-color: rgba(108, 51, 255, 0.08);
+}
+
+th {
+  font-weight: 700;
+  color: #6c33ff;
+  font-size: 1rem;
+  border-bottom: 3px solid rgba(108, 51, 255, 0.3);
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(108, 51, 255, 0.03);
+}
+
+tbody tr:hover {
+  background-color: rgba(108, 51, 255, 0.08);
+  transform: scale(1.01);
+  transition: all 0.2s;
+}
+
+/* ======================================================================
+  POCZĄTEK: ZMIANA STYLU DOPASOWANIA (TERAZ ZIELONE)
+======================================================================
+*/
+
+/* Podstawowy styl dla komórki similarity.
+  Klasy .similarity-green/yellow/red są teraz ignorowane, 
+  ponieważ .highlight ma teraz stały, zielony kolor.
+*/
+.highlight {
+  font-weight: 700;
+  font-size: 1.05rem;
+  background-color: #d4edda !important; /* Stałe zielone tło */
+  color: #155724 !important; /* Stały zielony tekst */
+}
+
+/* Poniższe klasy nie są już potrzebne, ale zostawiamy je puste 
+   na wypadek, gdybyś chciał je przywrócić w przyszłości.
+*/
+.similarity-green {
+}
+.similarity-yellow {
+}
+.similarity-red {
+}
+
+/* ======================================================================
+  KONIEC: ZMIANA STYLU DOPASOWANIA
+======================================================================
+*/
+
+/* KOMUNIKATY (Errors / Warnings) */
+.messages {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0 0;
+}
+.messages li {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.messages .warning {
+  background: #fff3cd;
+  color: #856404;
+  border-color: #ffeeba;
+}
+.messages .error {
+  background: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
