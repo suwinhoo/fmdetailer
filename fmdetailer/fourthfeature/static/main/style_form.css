@@ -1,0 +1,224 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f7fc;
+  min-height: 100vh;
+  color: #333;
+}
+
+nav {
+  width: 100%;
+  background-color: #8c6eff;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  position: relative;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background-color: #ffedff;
+  transition: width 0.3s ease;
+}
+
+nav a:hover {
+  color: #ffedff;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+@keyframes SlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.file-import-card {
+  background-color: #fff;
+  padding: 35px 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  width: 90%;
+  max-width: 650px;
+  margin: 50px auto;
+  animation: SlideIn 0.6s ease-out forwards;
+}
+
+.file-import-card h1 {
+  color: #6c33ff;
+  margin-bottom: 25px;
+  font-size: 1.7rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.file-import-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label,
+.file-label-title {
+  font-weight: 600;
+  color: #1b1b1b;
+  font-size: 0.95rem;
+}
+
+.form-group select {
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  background-color: #f9f9f9;
+  font-size: 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group select:focus {
+  outline: none;
+  border-color: #6c33ff;
+  box-shadow: 0 0 0 3px rgba(108, 51, 255, 0.2);
+}
+
+.file-import-card input[type="file"] {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.file-import-card .file-label {
+  display: block;
+  padding: 20px;
+  border: 2px dashed #6c33ff;
+  background-color: rgba(108, 51, 255, 0.05);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 600;
+  color: #5a28db;
+  transition: all 0.3s;
+}
+
+.file-import-card .file-label:hover {
+  border-color: #8c6eff;
+  background-color: rgba(140, 110, 255, 0.1);
+}
+
+.file-label .file-prompt {
+  color: #5a28db;
+  display: block;
+}
+
+.file-label .file-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #6c33ff;
+  display: block;
+  margin-top: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-150%) skewX(-25deg);
+  }
+  100% {
+    transform: translateX(150%) skewX(-25deg);
+  }
+}
+
+.button-submit {
+  border-radius: 30px;
+  height: 2.8rem;
+  margin-top: 10px;
+  border: none;
+  background-color: #6c33ff;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+.button-submit:hover {
+  background-color: #5a28db;
+}
+
+.button-submit::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-150%) skewX(-25deg);
+  transition: transform 0s;
+}
+
+.button-submit:hover::before {
+  animation: shine 1.2s ease-in-out forwards;
+}
+
+.messages {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+.messages li {
+  padding: 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #c62828;
+}

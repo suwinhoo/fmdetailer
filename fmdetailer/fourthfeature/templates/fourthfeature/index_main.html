@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Wybór Roli Zawodnika</title>
+
+    <link rel="stylesheet" href="{% static 'main/style_form.css' %}" />
+  </head>
+  <body>
+    <nav>
+      <a href="/">Main paige</a>
+      <a href="/player_analysis">Player analysis</a>
+      <a href="/similar_players">Similar players</a>
+      <a href="/squad">Squad picker</a>
+      <a href="/player_position_picker/">Player for position</a>
+      <a href="#">Fifth feature</a>
+    </nav>
+
+    <div class="file-import-card">
+      <h1>Dopasuj Zawodników do Roli</h1>
+
+      {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+        <li class="error">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+
+      <form
+        method="post"
+        action="{% url 'process_position_file' %}"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="selected_role">Wybierz rolę do dopasowania:</label>
+          <select id="selected_role" name="selected_role" required>
+            <option value="">-- Wybierz rolę --</option>
+            {% for role in roles %}
+            <option value="{{ role }}">{{ role }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <span class="file-label-title">Wgraj plik CSV z zawodnikami:</span>
+
+          <input
+            type="file"
+            id="player_csv_file"
+            name="player_csv_file"
+            accept=".csv"
+            required
+          />
+          <label for="player_csv_file" class="file-label">
+            <span class="file-prompt">Wybierz plik .csv</span>
+            <span class="file-name" id="file-name-display"></span>
+          </label>
+        </div>
+
+        <button type="submit" class="button-submit">
+          Analizuj dopasowanie
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

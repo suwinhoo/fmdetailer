@@ -160,7 +160,6 @@ def add_player(request):
         
         player_series = pd.Series(temp_player_for_calc) 
         
-        # --- MODYFIKACJA FILTRUJĄCA ROLE ---
         player_position_str = temp_player_for_calc.get('position', '') 
         player_group = get_position_group(player_position_str)
 
@@ -368,3 +367,4 @@ def player_detail(request, player_name):
     }
 
     return render(request, 'player_detail.html', context)
+

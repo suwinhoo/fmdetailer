@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>FMDETAILER - Strona Główna</title>
     <link rel="stylesheet" href="{% static 'main/style.css' %}" />
   </head>
   <body>
@@ -13,33 +13,81 @@
       <a href="/player_analysis">Player analysis</a>
       <a href="/similar_players">Similar players</a>
       <a href="/squad">Squad picker</a>
-      <a href="#">Fourth feature</a>
+      <a href="/player_position_picker/">Player for position</a>
       <a href="#">Fifth feature</a>
     </nav>
+
     <div class="name">FMDETAILER</div>
+
     <div class="container">
-      <a href="/player_analysis">
-        <div class="first">
-          <img
-            src="{% static 'main/player_analysis.png' %}"
-            alt=""
-            class="image"
-          />
-          <div class="text">
+      <a href="/player_analysis" class="feature-card">
+        <img
+          src="{% static 'main/heatmap.jpg' %}"
+          alt="Player Analysis"
+          class="image"
+        />
+        <div class="text">
+          <h3>Player Analysis</h3>
+          <p>
             Have no clue on which position player will present the best? Let's
-            have a look onto this
-          </div>
+            have a look onto this.
+          </p>
         </div>
       </a>
-      <a href="/similar_players">
-        <div class="second"></div>
+
+      <a href="/similar_players" class="feature-card">
+        <img
+          src="{% static 'main/submission.jpg' %}"
+          alt="Similar Players"
+          class="image"
+        />
+        <div class="text">
+          <h3>Similar Players</h3>
+          <p>
+            Need a backup or replacement? Find players with a similar profile.
+          </p>
+        </div>
       </a>
-      <a href="#">
-        <div class="third"></div>
+
+      <a href="/squad" class="feature-card">
+        <img
+          src="{% static 'main/squad.jpg' %}"
+          alt="Squad Picker"
+          class="image"
+        />
+        <div class="text">
+          <h3>Squad Picker</h3>
+          <p>
+            Build your dream team or find the best-fitting squad from your
+            roster.
+          </p>
+        </div>
       </a>
-      <a href="#">
-        <div class="fourth"></div>
+
+      <a href="/player_position_picker/" class="feature-card">
+        <img
+          src="{% static 'main/positions.jpg' %}"
+          alt="Player for Position"
+          class="image"
+        />
+        <div class="text">
+          <h3>Player for Position</h3>
+          <p>
+            Search the database to find the perfect player for a specific role.
+          </p>
+        </div>
       </a>
+    </div>
+    <div class="github-note">
+      <p>
+        All files needed to handle requests are located on GitHub:
+        <a
+          href="https://github.com/suwinhoo/fmdetailer"
+          target="_blank"
+          rel="noopener noreferrer"
+          >github.com/suwinhoo</a
+        >
+      </p>
     </div>
   </body>
 </html>

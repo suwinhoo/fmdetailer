@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mainpaige',
     'secondfeature',
-    'thirdfeature'
+    'thirdfeature',
+    'fourthfeature'
 ]
 
 

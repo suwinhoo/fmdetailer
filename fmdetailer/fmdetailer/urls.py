@@ -21,5 +21,6 @@ urlpatterns = [
     path("", include("mainpaige.urls")),
     path('admin/', admin.site.urls),
     path('', include("secondfeature.urls")),
-    path('squad/', include("thirdfeature.urls"))
+    path('squad/', include("thirdfeature.urls")),
+    path('player_position_picker/', include("fourthfeature.urls")),
 ]

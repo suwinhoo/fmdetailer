@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Wyniki Dopasowania Roli</title>
+
+    <link
+      rel="stylesheet"
+      href="{% static 'main/style_position_picker.css' %}"
+    />
+  </head>
+  <body>
+    <nav>
+      <a href="/">Main paige</a>
+      <a href="/player_analysis">Player analysis</a>
+      <a href="/similar_players">Similar players</a>
+      <a href="/squad">Squad picker</a>
+      <a href="/player_position_picker/">Player for position</a>
+      <a href="#">Fifth feature</a>
+    </nav>
+
+    <h1 class="player-name">Wyniki Dopasowania Roli</h1>
+
+    <div class="roles-analysis">
+      <h2>Rola wybrana do analizy: <strong>{{ selected_role }}</strong></h2>
+
+      {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% if results %}
+      <table>
+        <thead>
+          <tr>
+            {% for header in headers %}
+            <th>{{ header }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for player in results %}
+          <tr>
+            <td>{{ player.name }}</td>
+            <td>{{ player.position }}</td>
+            <td>{{ player.best_role }}</td>
+            <td>{{ player.fit_score }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>Brak wyników do wyświetlenia lub błąd w przetwarzaniu pliku.</p>
+      {% endif %}
+    </div>
+  </body>
+</html>

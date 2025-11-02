@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages 
 import os
 import pandas as pd
-import io 
+
 
 
 
@@ -45,7 +45,6 @@ ATTRIBUTE_NAME_MAP = {
     'First Touch': 'first_touch', 'Free Kick Taking': 'free_kicks', 'Penalty Taking': 'penalty_taking', 
     'Jumping Reach': 'jump', 'Aerial Reach': 'aerial_reach', 'Command of Area': 'command_of_area',
     'One on Ones': 'one_on_ones', 
-    # Mapowanie atrybutów pisanych wielką literą
     'Balance': 'balance', 'Bravery': 'bravery', 'Composure': 'composure', 'Concentration': 'concentration',
     'Decisions': 'decisions', 'Determination': 'determination', 'Flair': 'flair', 'Leadership': 'leadership',
     'Off the Ball': 'off_the_ball', 'Positioning': 'positioning', 'Teamwork': 'teamwork', 'Vision': 'vision',
@@ -54,19 +53,80 @@ ATTRIBUTE_NAME_MAP = {
     'Anticipation': 'anticipation', 'Tackling': 'tackling', 'Passing': 'passing', 'Technique': 'technique',
     'Long Shots': 'long_shots', 'Long Throws': 'long_throws', 'Corners': 'corners', 'Crossing': 'crossing',
     'Dribbling': 'dribbling', 'Finishing': 'finishing', 'Aggression': 'aggression',
-    # Atrybuty bramkarzy
     'Handling': 'handling', 'Kicking': 'kicking', 'Reflexes': 'reflexes', 'Throwing': 'throwing',
     'Communication': 'communication', 'Eccentricity': 'eccentricity', 'Punching': 'punching'
 }
 
+def position_picker_view(request):    
+    role_names = sorted(ROLES_WEIGHT.keys())
+    
+    context = {
+        'roles': role_names
+    }
+    return render(request, "fourthfeature/index_main.html", context)
 
-# --- POCZĄTEK POPRAWKI 2: ZASTĄP TĘ FUNKCJĘ ---
+
+def process_position_file(request):
+    if request.method != "POST":
+        return redirect('position_picker_view') 
+
+    uploaded_file = request.FILES.get("player_csv_file") 
+    selected_role = request.POST.get("selected_role") 
+    
+    if not uploaded_file or not selected_role:
+        messages.error(request, "Błąd: Wybierz plik CSV i pozycję/rolę.")
+        return redirect('position_picker_view')
+
+    try:
+        df = pd.read_csv(uploaded_file.file, encoding='utf-8') 
+    except Exception:
+        uploaded_file.file.seek(0)
+        df = pd.read_csv(uploaded_file.file, encoding='latin-1')
+    if df.empty:
+        messages.error(request, "Plik CSV jest pusty.")
+        return redirect('position_picker_view')
+    
+    if 'name' not in df.columns: 
+        messages.error(request, "Brak kolumny 'name'.")
+        return redirect('position_picker_view')
+        
+    for col in CSV_HEADER:
+        if col not in df.columns:
+            df[col] = 0
+            
+    for col in NUMERIC_COLS:
+        df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
+
+    if selected_role not in ROLES_WEIGHT:
+        messages.error(request, f"Nieznana rola: {selected_role}")
+        return redirect('position_picker_view')
+    
+    df_sorted = fit_to_role(selected_role, df, ROLES_WEIGHT)
+    fit_col_name = f"Fit {selected_role}"
+    display_cols = ['name', 'position', 'best_role', fit_col_name]
+    
+    if fit_col_name not in display_cols:
+        display_cols.append(fit_col_name)
+
+    display_df = df_sorted[display_cols].head(25) # Pokaż top 25
+    results_list = display_df.to_dict('records')
+
+    for row in results_list:
+        row['fit_score'] = f"{row[fit_col_name]:.2f}"
+        del row[fit_col_name] 
+
+    context = {
+        'selected_role': selected_role,
+        'results': results_list,
+        'headers': ['Name', 'Position', 'Best Role', 'Fit Score']
+    }
+    
+    return render(request, 'fourthfeature/position_picker_results.html', context)
+    
+
 
 def fit_player(player_series, role, roles_weight):
-    """
-    POPRAWIONA funkcja obliczająca dopasowanie 0-100.
-    Używa ATTRIBUTE_NAME_MAP do poprawnego znalezienia kolumn.
-    """
+
     if role not in roles_weight:
         return 0
     
@@ -78,9 +138,7 @@ def fit_player(player_series, role, roles_weight):
     numerator = 0
     denominator = 0
 
-    # Przetwarzanie atrybutów kluczowych
     for attr, weight in key_stats.items():
-        # Użyj mapy, aby znaleźć poprawną nazwę kolumny
         col_name = ATTRIBUTE_NAME_MAP.get(attr, attr.lower().replace(' ', '_'))
         
         player_attr_val = player_series.get(col_name, 0) 
@@ -90,9 +148,7 @@ def fit_player(player_series, role, roles_weight):
         numerator += float(player_attr_val) * weight
         denominator += MAX_ATTRIBUTE_VALUE * weight
 
-    # Przetwarzanie atrybutów normalnych
     for attr, weight in normal_stats.items():
-        # Użyj mapy
         col_name = ATTRIBUTE_NAME_MAP.get(attr, attr.lower().replace(' ', '_'))
         
         player_attr_val = player_series.get(col_name, 0)
@@ -108,122 +164,9 @@ def fit_player(player_series, role, roles_weight):
     score = (numerator / denominator) * 100
     return score
 
+def fit_to_role(role,df,roles_weight):
 
-def get_position_group(position_str):
-    position_str = str(position_str).upper()
-    if 'GK' in position_str: return 'GK'
-    if 'D' in position_str: return 'DEF'
-    if 'M' in position_str or 'WB' in position_str: return 'MID'
-    if 'ST' in position_str or 'F' in position_str or 'AM' in position_str: return 'FWD'
-    return None
+    df[f"Fit {role}"]=df.apply(lambda player: fit_player(player, role,roles_weight), axis=1)
+    df_sorted = df.sort_values(by=f"Fit {role}",ascending=False)
+    return df_sorted
 
-def process_uploaded_file_to_df(uploaded_file):
-    try:
-        try:
-            df = pd.read_csv(uploaded_file.file, encoding='utf-8') 
-        except Exception:
-            uploaded_file.file.seek(0)
-            df = pd.read_csv(uploaded_file.file, encoding='latin-1')
-
-        if df.empty:
-            return None, "Plik CSV jest pusty."
-
-        for col in CSV_HEADER:
-            if col not in df.columns and col not in ['name', 'position', 'best_role']:
-                df[col] = 0
-        
-        if 'name' not in df.columns: return None, "Brak wymaganej kolumny 'name' w pliku."
-        if 'position' not in df.columns: df['position'] = '' 
-
-        for col in NUMERIC_COLS:
-            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
-        
-        best_roles = []
-        for index, player_series in df.iterrows():
-            best_role_name = "Unknown"
-            best_score = 0
-            player_position_str = str(player_series.get('position', ''))
-            player_group = get_position_group(player_position_str) 
-
-            roles_to_check = ROLE_GROUPS.get(player_group, ROLES_WEIGHT.keys())
-
-            for role in roles_to_check:
-                if role in ROLES_WEIGHT:
-                    score = fit_player(player_series, role, ROLES_WEIGHT) 
-                    if score > best_score:
-                        best_score = score
-                        best_role_name = role
-            best_roles.append(best_role_name)
-        
-        df['best_role'] = best_roles
-        return df, None
-
-    except Exception as e:
-        return None, f"Nieoczekiwany błąd przetwarzania: {str(e)}"
-
-
-
-def find_best(df, roles_weight):
-    best = {}
-    
-    if 'best_role' not in df.columns:
-        return {}, "DataFrame nie zawierał wymaganej kolumny 'best_role'."
-        
-    roles = df['best_role'].unique()
-    
-    for role in roles:
-        if role == "Unknown" or role not in roles_weight:
-            continue
-            
-        scores = df.apply(lambda player: fit_player(player, role, roles_weight), axis=1)
-        best_player_index = scores.idxmax()
-        
-        best_player_name = df.loc[best_player_index, 'name'] 
-        best_player_fit = scores.loc[best_player_index]
-        best[role] = {best_player_name: round(float(best_player_fit), 2)}
-    
-    return best, None
-
-
-def main_paige(request):
-    return render(request, "main_paige.html")
-
-def analyze_file(request):
-
-    if request.method != "POST":
-        return redirect('main_paige')
-
-    uploaded_file = request.FILES.get("plik_csv") 
-    
-    if not uploaded_file:
-        messages.error(request, "Błąd: Nie wybrano pliku CSV.")
-        return redirect('main_paige') 
-
-    df, error = process_uploaded_file_to_df(uploaded_file)
-    if error:
-        messages.error(request, f"Błąd w pliku ({uploaded_file.name}): {error}")
-        return redirect('main_paige')
-
-    best_players_by_role, error = find_best(df, ROLES_WEIGHT)
-    if error:
-        messages.error(request, f"Błąd podczas analizy: {error}")
-        return redirect('main_paige')
-    
-    if not best_players_by_role:
-        messages.warning(request, "Nie znaleziono żadnych ról do przeanalizowania w pliku.")
-   
-    results_list = []
-    for role, player_data in best_players_by_role.items():
-        for player_name, fit_score in player_data.items():
-            results_list.append({
-                'role': role,
-                'name': player_name,
-                'score': f"{fit_score:.2f}" 
-            })
-    
-    context = {
-        'results': results_list, 
-        'file_name': uploaded_file.name
-    }
-    
-    return render(request, 'results_squad.html', context)
