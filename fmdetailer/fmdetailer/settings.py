@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainpaige',
-    'secondfeature'
+    'secondfeature',
+    'thirdfeature'
 ]
 
 
@@ -119,8 +120,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = []  # (dla wspólnych plików, np. globalnych)
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # (do collectstatic)
+STATICFILES_DIRS = []  
+STATIC_ROOT = BASE_DIR / 'staticfiles'  
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

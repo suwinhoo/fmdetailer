@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages 
 import os
-import csv
 import pandas as pd
 import io 
 
@@ -26,6 +25,7 @@ ROLE_GROUPS = {
             'Trequartista'] 
 }
 
+
 CSV_HEADER = [
     'name', 'position', 'best_role', 'corners', 'crossing', 'dribbling', 'finishing', 
     'first_touch', 'free_kicks', 'heading', 'long_shots', 'long_throws', 'marking', 
@@ -40,33 +40,40 @@ CSV_HEADER = [
 ]
 NUMERIC_COLS = [col for col in CSV_HEADER if col not in ['name', 'position', 'best_role']]
 
-# 
 
 
 def fit_player(player_series, role, roles_weight):
+
+
     if role not in roles_weight:
         return 0
-    
+    MAX_ATTRIBUTE_VALUE = 20
     weights = roles_weight[role]
-    total_score = 0
-    total_weight = 0
-    
-    for attr, weight in weights.get('key', {}).items():
-        player_attr_val = player_series.get(attr.lower(), 0) 
-        if pd.isna(player_attr_val): player_attr_val = 0
-        total_score += float(player_attr_val) * weight
-        total_weight += weight
-        
-    for attr, weight in weights.get('normal', {}).items():
-        player_attr_val = player_series.get(attr.lower(), 0)
-        if pd.isna(player_attr_val): player_attr_val = 0
-        total_score += float(player_attr_val) * weight
-        total_weight += weight
+    key_stats = weights.get('key', {})
+    normal_stats = weights.get('normal', {})
 
-    if total_weight == 0:
-        return 0
-            
-    return total_score / total_weight
+    numerator = 0
+    denominator = 0
+
+    for attr, weight in key_stats.items():
+        player_attr_val = player_series.get(attr.lower(), 0) 
+        if pd.isna(player_attr_val): 
+            player_attr_val = 0
+        numerator += float(player_attr_val) * weight
+        denominator += MAX_ATTRIBUTE_VALUE * weight
+
+    for attr, weight in normal_stats.items():
+        player_attr_val = player_series.get(attr.lower(), 0)
+        if pd.isna(player_attr_val): 
+            player_attr_val = 0
+        numerator += float(player_attr_val) * weight
+        denominator += MAX_ATTRIBUTE_VALUE * weight
+    
+    if denominator == 0:
+        return 0 
+
+    score = (numerator / denominator) * 100
+    return score
 
 def get_position_group(position_str):
     position_str = str(position_str).upper()
@@ -76,8 +83,7 @@ def get_position_group(position_str):
     if 'ST' in position_str or 'F' in position_str or 'AM' in position_str: return 'FWD'
     return None
 
-def process_uploaded_csv_to_rows(uploaded_file):
-
+def process_uploaded_file_to_df(uploaded_file):
     try:
         try:
             df = pd.read_csv(uploaded_file.file, encoding='utf-8') 
@@ -86,7 +92,7 @@ def process_uploaded_csv_to_rows(uploaded_file):
             df = pd.read_csv(uploaded_file.file, encoding='latin-1')
 
         if df.empty:
-            return [], None 
+            return None, "Plik CSV jest pusty."
 
         for col in CSV_HEADER:
             if col not in df.columns and col not in ['name', 'position', 'best_role']:
@@ -95,8 +101,10 @@ def process_uploaded_csv_to_rows(uploaded_file):
         if 'name' not in df.columns: return None, "Brak wymaganej kolumny 'name' w pliku."
         if 'position' not in df.columns: df['position'] = '' 
 
-        rows_to_write = []
-
+        for col in NUMERIC_COLS:
+            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
+        
+        best_roles = []
         for index, player_series in df.iterrows():
             best_role_name = "Unknown"
             best_score = 0
@@ -111,149 +119,77 @@ def process_uploaded_csv_to_rows(uploaded_file):
                     if score > best_score:
                         best_score = score
                         best_role_name = role
-            
-            final_player_data_list = []
-            for field in CSV_HEADER:
-                if field == 'best_role':
-                    final_player_data_list.append(best_role_name)
-                else:
-                    value = player_series.get(field)
-                    if pd.isna(value):
-                        value = 0 if field not in ['name', 'position'] else ''
-                    final_player_data_list.append(value)
-            
-            rows_to_write.append(final_player_data_list)
+            best_roles.append(best_role_name)
         
-        return rows_to_write, None  
+        df['best_role'] = best_roles
+        return df, None
 
     except Exception as e:
         return None, f"Nieoczekiwany błąd przetwarzania: {str(e)}"
 
 
 
-def fit_to_role(role, df, roles_weight):
-
-    col_name = f'fit_{role}' 
-    df[col_name] = df.apply(
-        lambda player: fit_player(player, role, roles_weight), 
-        axis=1
-    )
-    return df
-
-def find_similar(player_name, df, roles_weight):
-
+def find_best(df, roles_weight):
+    best = {}
     
-    tolerance = 10.0
-
-    role_series = df.loc[df['name'].str.lower() == player_name.lower(), 'best_role']
+    if 'best_role' not in df.columns:
+        return {}, "DataFrame nie zawierał wymaganej kolumny 'best_role'."
+        
+    roles = df['best_role'].unique()
     
-    if role_series.empty:
-        return pd.DataFrame(), f"Nie znaleziono gracza o nazwie '{player_name}' w połączonych plikach."
+    for role in roles:
+        if role == "Unknown" or role not in roles_weight:
+            continue
+            
+        scores = df.apply(lambda player: fit_player(player, role, roles_weight), axis=1)
+        best_player_index = scores.idxmax()
+        
+        best_player_name = df.loc[best_player_index, 'name'] 
+        best_player_fit = scores.loc[best_player_index]
+        best[role] = {best_player_name: round(float(best_player_fit), 2)}
     
-    role = role_series.iloc[0]
-    if role == "Unknown":
-         return pd.DataFrame(), f"Nie można porównać gracza '{player_name}', ponieważ ma nieznaną najlepszą rolę."
-
-    fit_to_role(role, df, ROLES_WEIGHT)
-    
-    fit_col_name = f'fit_{role}'
-    
-    player_fit = df.loc[df['name'].str.lower() == player_name.lower(), fit_col_name].iloc[0]
-
-    similar_players = df.loc[
-        (df[fit_col_name] >= player_fit - tolerance) &
-        (df[fit_col_name] <= player_fit + tolerance)
-    ].copy()
-    
-    similar_players['similarity'] = similar_players[fit_col_name].apply(lambda x: 100 - abs(x - player_fit))
-    similar_players = similar_players.sort_values(by='similarity', ascending=False)
-    
-    similar_players = similar_players[similar_players['name'].str.lower() != player_name.lower()]
-    
-    return similar_players, None
+    return best, None
 
 
+def main_paige(request):
+    return render(request, "main_paige.html")
 
-def main(request):
-    return render(request, "main.html")
-
-def run_similarity_analysis(request):
+def analyze_file(request):
 
     if request.method != "POST":
-        return redirect('main')
+        return redirect('main_paige')
 
-    file_target = request.FILES.get("main_player_file") 
-    file_base = request.FILES.get("player_list_file") 
+    uploaded_file = request.FILES.get("plik_csv") 
     
-    if not file_target or not file_base:
-        messages.error(request, "Błąd: Musisz wgrać oba pliki CSV.")
-        return redirect('main')
+    if not uploaded_file:
+        messages.error(request, "Błąd: Nie wybrano pliku CSV.")
+        return redirect('main_paige') 
 
-    target_rows, error = process_uploaded_csv_to_rows(file_target)
+    df, error = process_uploaded_file_to_df(uploaded_file)
     if error:
-        messages.error(request, f"Błąd w pliku gracza-wzoru ({file_target.name}): {error}")
-        return redirect('main')
-    if not target_rows:
-        messages.error(request, f"Plik gracza-wzoru ({file_target.name}) jest pusty.")
-        return redirect('main')
-    if len(target_rows) > 1:
-        messages.warning(request, f"Plik gracza-wzoru ({file_target.name}) zawierał wielu graczy. Użyto tylko pierwszego z nich.")
-        target_rows = [target_rows[0]]
+        messages.error(request, f"Błąd w pliku ({uploaded_file.name}): {error}")
+        return redirect('main_paige')
 
-    target_player_name = target_rows[0][CSV_HEADER.index('name')]
-    target_player_role = target_rows[0][CSV_HEADER.index('best_role')] # Pobieramy rolę od razu
-
-    base_rows, error = process_uploaded_csv_to_rows(file_base)
+    best_players_by_role, error = find_best(df, ROLES_WEIGHT)
     if error:
-        messages.error(request, f"Błąd w pliku bazy ({file_base.name}): {error}")
-        return redirect('main')
-    if not base_rows:
-        messages.error(request, f"Plik bazy ({file_base.name}) jest pusty.")
-        return redirect('main')
-
-    all_rows = target_rows + base_rows
-    df = pd.DataFrame(all_rows, columns=CSV_HEADER)
-
-    for col in NUMERIC_COLS:
-        df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
-        
-    similar_players_df, error = find_similar(target_player_name, df, ROLES_WEIGHT)
+        messages.error(request, f"Błąd podczas analizy: {error}")
+        return redirect('main_paige')
     
-    if error:
-        messages.error(request, error)
-        return redirect('main')
-
-
+    if not best_players_by_role:
+        messages.warning(request, "Nie znaleziono żadnych ról do przeanalizowania w pliku.")
+   
+    results_list = []
+    for role, player_data in best_players_by_role.items():
+        for player_name, fit_score in player_data.items():
+            results_list.append({
+                'role': role,
+                'name': player_name,
+                'score': f"{fit_score:.2f}" 
+            })
     
-    display_headers = []
-    display_rows = []
-    
-    if not similar_players_df.empty:
-        calculated_role = similar_players_df.iloc[0]['best_role']
-        fit_col_name = f'fit_{calculated_role}'
-        
-        columns_to_show = ['name', 'position', 'best_role', fit_col_name, 'similarity']
-        display_headers = ["Name", "Position", "Best Role", f"Fit ({calculated_role})", "Similarity"]
-
-        for index, player_data in similar_players_df.iterrows():
-            row = [
-                player_data.get('name', ''),
-                player_data.get('position', ''),
-                player_data.get('best_role', ''),
-                f"{player_data.get(fit_col_name, 0):.2f}",
-                f"{player_data.get('similarity', 0):.2f}%" 
-            ]
-            display_rows.append(row)
-            
-    else:
-        messages.warning(request, f"Nie znaleziono żadnych podobnych graczy dla '{target_player_name}' (przy domyślnej tolerancji 10).")
-
     context = {
-        'target_player_name': target_player_name,
-        'target_player_role': target_player_role, 
-        'display_headers': display_headers,
-        'display_rows': display_rows
+        'results': results_list, 
+        'file_name': uploaded_file.name
     }
     
-    return render(request, 'results.html', context)
-
+    return render(request, 'results_squad.html', context)

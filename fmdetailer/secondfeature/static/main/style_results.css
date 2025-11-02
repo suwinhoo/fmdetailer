@@ -1,5 +1,3 @@
-/* STYLE SPECYFICZNE DLA STRONY WYNIKÓW (results.html) */
-
 @keyframes SlideIn {
   from {
     opacity: 0;
@@ -14,7 +12,7 @@
 .container {
   display: block;
   max-width: 900px;
-  margin: 3rem auto 5rem auto; /* GÓRA/DÓŁ | AUTO | GÓRA/DÓŁ | AUTO */
+  margin: 3rem auto 5rem auto;
   background-color: #fff;
   padding: 2.5rem;
   border-radius: 20px;
@@ -22,7 +20,6 @@
   animation: SlideIn 0.6s ease-out forwards;
 }
 
-/* NAGŁÓWKI */
 h1 {
   color: #6c33ff;
   font-size: 2.5rem;
@@ -77,38 +74,13 @@ tbody tr:hover {
   transition: all 0.2s;
 }
 
-/* ======================================================================
-  POCZĄTEK: ZMIANA STYLU DOPASOWANIA (TERAZ ZIELONE)
-======================================================================
-*/
-
-/* Podstawowy styl dla komórki similarity.
-  Klasy .similarity-green/yellow/red są teraz ignorowane, 
-  ponieważ .highlight ma teraz stały, zielony kolor.
-*/
 .highlight {
   font-weight: 700;
   font-size: 1.05rem;
-  background-color: #d4edda !important; /* Stałe zielone tło */
-  color: #155724 !important; /* Stały zielony tekst */
+  background-color: #d4edda;
+  color: #155724;
 }
 
-/* Poniższe klasy nie są już potrzebne, ale zostawiamy je puste 
-   na wypadek, gdybyś chciał je przywrócić w przyszłości.
-*/
-.similarity-green {
-}
-.similarity-yellow {
-}
-.similarity-red {
-}
-
-/* ======================================================================
-  KONIEC: ZMIANA STYLU DOPASOWANIA
-======================================================================
-*/
-
-/* KOMUNIKATY (Errors / Warnings) */
 .messages {
   list-style: none;
   padding: 0;

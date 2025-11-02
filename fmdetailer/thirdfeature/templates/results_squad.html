@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wyniki Analizy</title>
+
+    <link rel="stylesheet" href="{% static 'main/style_main.css' %}" />
+
+    <style>
+      .container {
+        max-width: 900px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+      }
+      th {
+        background-color: #f4f4f4;
+        color: #6c33ff;
+        font-weight: 700;
+      }
+      .highlight {
+        background-color: #d4edda;
+        color: #155724;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/">Main page</a>
+      <a href="{% url 'main_paige' %}">Player analysis</a>
+      <a href="/squad">Squad picker</a>
+      <a href="{% url 'main_paige' %}">Player analysis</a>
+    </nav>
+
+    <div class="container">
+      <a href="{% url 'main_paige' %}">&larr; Wróć do wgrywania</a>
+
+      <h1>Wyniki Analizy</h1>
+      <h2>
+        Najlepsi zawodnicy dla każdej roli w pliku:
+        <strong>{{ file_name }}</strong>
+      </h2>
+
+      {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% if results %}
+      <table>
+        <thead>
+          <tr>
+            <th>Rola</th>
+            <th>Najlepszy Zawodnik</th>
+            <th>Dopasowanie do Roli</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in results %}
+          <tr>
+            <td><strong>{{ item.role }}</strong></td>
+            <td>{{ item.name }}</td>
+            <td class="highlight">{{ item.score }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %} {% if not messages %}
+      <p>Brak wyników do wyświetlenia.</p>
+      {% endif %} {% endif %}
+    </div>
+  </body>
+</html>
