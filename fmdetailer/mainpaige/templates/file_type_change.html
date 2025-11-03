@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analiza Zawodników</title>
+    <link rel="stylesheet" href="{% static 'main/style_main.css' %}" />
+    <style>
+      .messages {
+        list-style: none;
+        padding: 0;
+        margin: 1em;
+      }
+      .messages li {
+        padding: 1em;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+      .messages .error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .messages .warning {
+        background: #fff3cd;
+        color: #856404;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/">Main paige</a>
+      <a href="/player_analysis">Player analysis</a>
+      <a href="/similar_players">Similar players</a>
+      <a href="/squad">Squad picker</a>
+      <a href="/player_position_picker/">Player for position</a>
+      <a href="#">Fifth feature</a>
+    </nav>
+
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="file-import-card">
+      <form
+        method="post"
+        action="{% url 'analyze_file_view' %}"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+
+        <h2>Importuj plik .rtf</h2>
+        <label for="id_main_player" class="file-label">Wybierz plik .rtf</label>
+        <input
+          id="id_main_player"
+          type="file"
+          name="rtf_file"
+          accept=".rtf"
+          required
+        />
+        <button type="submit" class="button-submit">Importuj plik</button>
+      </form>
+    </div>
+  </body>
+</html>
