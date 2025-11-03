@@ -343,7 +343,7 @@ def player_detail(request, player_name):
     if player_group and player_group in ROLE_GROUPS:
         roles_to_check = ROLE_GROUPS[player_group]
     else:
-        roles_to_check = ROLES_WEIGHT.keys() # Fallback
+        roles_to_check = ROLES_WEIGHT.keys() 
 
     for role in roles_to_check:
         if role in ROLES_WEIGHT:
@@ -361,8 +361,8 @@ def player_detail(request, player_name):
 
     context = {
         'player': player_data,
-        'sorted_scores': sorted_scores_position, # <-- Główna lista do wyświetlenia
-        'sorted_scores_overall': sorted_scores_overall, # <-- Opcjonalna lista
+        'sorted_scores': sorted_scores_position, 
+        'sorted_scores_overall': sorted_scores_overall, 
         'error': error_msg
     }
 

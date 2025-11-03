@@ -45,7 +45,6 @@ ATTRIBUTE_NAME_MAP = {
     'First Touch': 'first_touch', 'Free Kick Taking': 'free_kicks', 'Penalty Taking': 'penalty_taking', 
     'Jumping Reach': 'jump', 'Aerial Reach': 'aerial_reach', 'Command of Area': 'command_of_area',
     'One on Ones': 'one_on_ones', 
-    # Mapowanie atrybutów pisanych wielką literą
     'Balance': 'balance', 'Bravery': 'bravery', 'Composure': 'composure', 'Concentration': 'concentration',
     'Decisions': 'decisions', 'Determination': 'determination', 'Flair': 'flair', 'Leadership': 'leadership',
     'Off the Ball': 'off_the_ball', 'Positioning': 'positioning', 'Teamwork': 'teamwork', 'Vision': 'vision',
@@ -54,19 +53,13 @@ ATTRIBUTE_NAME_MAP = {
     'Anticipation': 'anticipation', 'Tackling': 'tackling', 'Passing': 'passing', 'Technique': 'technique',
     'Long Shots': 'long_shots', 'Long Throws': 'long_throws', 'Corners': 'corners', 'Crossing': 'crossing',
     'Dribbling': 'dribbling', 'Finishing': 'finishing', 'Aggression': 'aggression',
-    # Atrybuty bramkarzy
     'Handling': 'handling', 'Kicking': 'kicking', 'Reflexes': 'reflexes', 'Throwing': 'throwing',
     'Communication': 'communication', 'Eccentricity': 'eccentricity', 'Punching': 'punching'
 }
 
 
-# --- POCZĄTEK POPRAWKI 2: ZASTĄP TĘ FUNKCJĘ ---
 
 def fit_player(player_series, role, roles_weight):
-    """
-    POPRAWIONA funkcja obliczająca dopasowanie 0-100.
-    Używa ATTRIBUTE_NAME_MAP do poprawnego znalezienia kolumn.
-    """
     if role not in roles_weight:
         return 0
     
@@ -78,9 +71,7 @@ def fit_player(player_series, role, roles_weight):
     numerator = 0
     denominator = 0
 
-    # Przetwarzanie atrybutów kluczowych
     for attr, weight in key_stats.items():
-        # Użyj mapy, aby znaleźć poprawną nazwę kolumny
         col_name = ATTRIBUTE_NAME_MAP.get(attr, attr.lower().replace(' ', '_'))
         
         player_attr_val = player_series.get(col_name, 0) 
@@ -90,11 +81,8 @@ def fit_player(player_series, role, roles_weight):
         numerator += float(player_attr_val) * weight
         denominator += MAX_ATTRIBUTE_VALUE * weight
 
-    # Przetwarzanie atrybutów normalnych
     for attr, weight in normal_stats.items():
-        # Użyj mapy
         col_name = ATTRIBUTE_NAME_MAP.get(attr, attr.lower().replace(' ', '_'))
-        
         player_attr_val = player_series.get(col_name, 0)
         if pd.isna(player_attr_val): 
             player_attr_val = 0
